@@ -60,6 +60,23 @@ void mem_callback(const char* args)
     mem(address);
 }
 
+void wmem_callback(const char* args)
+{
+    if (args == NULL || args[0] == '\0')
+    {
+        printf("error: usage: wmem <hex_addr> <hex_value>\n");
+        return;
+    }
+
+    char* end_ptr;
+    
+    uint32_t addr  = (uint32_t)strtoul(args,    &end_ptr, 16);
+
+    uint32_t value = (uint32_t)strtoul(end_ptr, NULL,     16);
+
+    wmem(addr, value);
+}
+
 api_t device_api[] =
 {
 	{"version", version_callback, "get device name and firmware version"},
@@ -69,6 +86,7 @@ api_t device_api[] =
     {"set_period", led_blink_set_period_ms_callback, "setting period of LED blinking"},
     {"help", help_callback, "get help about all avaliable commands"},
     {"mem", mem_callback, "get value from adress"},
+    {"wmem",    wmem_callback,     "write memory: wmem <hex_addr> <hex_value>"},
 	{NULL, NULL, NULL},
 };
 
