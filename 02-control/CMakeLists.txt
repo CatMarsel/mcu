@@ -22,6 +22,10 @@ add_executable(${PROJECT_NAME}
 	${CMAKE_CURRENT_SOURCE_DIR}/stdio-task/stdio-task.h
 	${CMAKE_CURRENT_SOURCE_DIR}/protocol-task/protocol-task.c
 	${CMAKE_CURRENT_SOURCE_DIR}/protocol-task/protocol-task.h
+	${CMAKE_CURRENT_SOURCE_DIR}/led-task/led-task.h
+	${CMAKE_CURRENT_SOURCE_DIR}/led-task/led-task.c
+	${CMAKE_CURRENT_SOURCE_DIR}/mem-wmem-task/mem-wmem-task.h
+	${CMAKE_CURRENT_SOURCE_DIR}/mem-wmem-task/mem-wmem-task.c
 )
 
 # Указываем на какие библиотеки ссылается наш код - типовая строчка для любого CMakeLists.txt
