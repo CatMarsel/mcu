@@ -5,6 +5,7 @@
 #include "protocol-task/protocol-task.h"
 #include "led-task/led-task.h"
 #include "mem-wmem-task/mem-wmem-task.h"
+#include "adc-task/adc-task.h"
 
 #define DEVICE_NAME "my-pico-device"
 #define DEVICE_VRSN "v0.0.1"
@@ -78,6 +79,27 @@ void wmem_callback(const char* args)
     led_task_state_set(LED_STATE_BLINK);
 }
 
+void get_adc_callback(const char* args)
+{
+    float voltage_V = adc_task_get_voltage();
+    printf("%f\n", voltage_V);
+}
+
+void get_temp_callback(const char* args)
+{
+    float temp_C = adc_task_get_temp();
+    printf("%f\n", temp_C);
+}
+
+void tm_start_callback(const char* args)
+{
+    adc_task_set_state(ADC_TASK_STATE_RUN);
+}
+
+void tm_stop_callback(const char* args)
+{
+    adc_task_set_state(ADC_TASK_STATE_IDLE);
+}
 api_t device_api[] =
 {
 	{"version", version_callback, "get device name and firmware version"},
@@ -88,6 +110,10 @@ api_t device_api[] =
     {"help", help_callback, "get help about all avaliable commands"},
     {"mem", mem_callback, "get value from adress"},
     {"wmem",    wmem_callback,     "write memory: wmem <hex_addr> <hex_value>"},
+    {"get_adc",    get_adc_callback,     "get voltage from GPIO26"},
+    {"get_temp",    get_temp_callback,     "get inner temp"},
+    {"tm_start",    tm_start_callback,     "start measuaring"},
+    {"tm_stop",    tm_stop_callback,     "stop measuaring"},
 	{NULL, NULL, NULL},
 };
 
@@ -106,10 +132,12 @@ int main()
     stdio_task_init();
     protocol_task_init(device_api);
     led_task_init();
+    adc_task_init();
     
     while(1)
     {
         protocol_task_handle(stdio_task_handle());
         led_task_handle();
+        adc_task_handle();
     }
 }
