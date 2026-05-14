@@ -1,0 +1,2 @@
+/usr/local/bin/arm-none-eabi-ar qc libbme280-driver.a "CMakeFiles/bme280-driver.dir/src/bme280-driver.cpp.o"
+/usr/local/bin/arm-none-eabi-ranlib libbme280-driver.a
