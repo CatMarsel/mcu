@@ -1,4 +1,3 @@
-
 # Требуем минимальную версию cmake - типовая строчка для любого CMakeLists.txt
 cmake_minimum_required(VERSION 3.15)
 
@@ -19,22 +18,18 @@ pico_sdk_init()
 add_executable(${PROJECT_NAME}
 	${CMAKE_CURRENT_SOURCE_DIR}/main.c
 	${CMAKE_CURRENT_SOURCE_DIR}/stdio-task/stdio-task.c
-	${CMAKE_CURRENT_SOURCE_DIR}/stdio-task/stdio-task.h
 	${CMAKE_CURRENT_SOURCE_DIR}/protocol-task/protocol-task.c
-	${CMAKE_CURRENT_SOURCE_DIR}/protocol-task/protocol-task.h
-	${CMAKE_CURRENT_SOURCE_DIR}/led-task/led-task.h
 	${CMAKE_CURRENT_SOURCE_DIR}/led-task/led-task.c
-	${CMAKE_CURRENT_SOURCE_DIR}/mem-wmem-task/mem-wmem-task.h
-	${CMAKE_CURRENT_SOURCE_DIR}/mem-wmem-task/mem-wmem-task.c
 )
+
+add_subdirectory("../libs/ili9341-driver" "${PROJECT_BINARY_DIR}/ili9341-driver")
 
 # Указываем на какие библиотеки ссылается наш код - типовая строчка для любого CMakeLists.txt
 target_link_libraries(${PROJECT_NAME}
 	pico_stdlib
-	ili9341
+	ili9341-driver
+	hardware_spi
 )
-
-add_subdirectory("../libs/ili9341-driver" "${PROJECT_BINARY_DIR}/ili9341")
 
 # Указываем файл, в котором находится линкер скрипт - специфика сборки под МК
 pico_set_linker_script(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/memmap_rp2040.ld)

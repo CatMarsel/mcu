@@ -11,7 +11,6 @@ int command_buf_idx;
 void stdio_task_init()
 {
 	command_buf_idx = 0;
-    stdio_init_all();
 }
 
 char* stdio_task_handle()
@@ -23,6 +22,12 @@ char* stdio_task_handle()
 	}
 
 	putchar(symbol);
+
+	if (symbol == 127 && command_buf_idx > 0)
+	{
+		command_buf_idx--;
+		return NULL;
+	}
 
 	if (symbol == '\r' || symbol == '\n')
 	{
